@@ -1,0 +1,1881 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Ericsson\_Problem-1-Modelling}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train\PYZus{}file.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+   ID      Place         location           date             status  \textbackslash{}
+0   1  startup\_1              NaN   Dec 11, 2018  Current Employee
+1   5  startup\_1  Los Angeles, CA   Jul 19, 2018   Former Employee
+2   9  startup\_1     New York, NY   Dec 10, 2018  Current Employee
+3  16  startup\_1              NaN    Dec 6, 2018  Current Employee
+4  17  startup\_1              NaN   Nov 29, 2018  Current Employee
+
+             job\_title                                  summary  \textbackslash{}
+0   Anonymous Employee                 Best Company to work for
+1    Software Engineer          Unique, one of a kind dream job
+2   Anonymous Employee  Google Surpasses Realistic Expectations
+3   Anonymous Employee                                   Review
+4   Anonymous Employee                         Review of Google
+
+                                           positives  \textbackslash{}
+0                      People are smart and friendly
+1  Google is a world of its own. At every other c{\ldots}
+2  Great products. Vision you can feel good about{\ldots}
+3                  The people are great to work with
+4     The people are great to work with, good perks.
+
+                                           negatives  \textbackslash{}
+0                 Bureaucracy is slowing things down
+1  If you don't work in MTV (HQ), you will be giv{\ldots}
+2  Younger employees complaining about the compan{\ldots}
+3          There is lower compensation than expected
+4          Wide variety in experience based on team.
+
+                                      advice\_to\_mgmt  overall  score\_1  \textbackslash{}
+0                                                NaN      5.0      4.0
+1  Promote managers into management for their man{\ldots}      5.0      5.0
+2                                                NaN      5.0      5.0
+3                                                NaN      5.0      NaN
+4                                                NaN      5.0      4.0
+
+   score\_2  score\_3  score\_4  score\_5  score\_6
+0      5.0      5.0      4.0      5.0        0
+1      5.0      5.0      5.0      5.0       49
+2      5.0      5.0      5.0      5.0        0
+3      NaN      NaN      NaN      NaN        0
+4      5.0      5.0      5.0      4.0        2
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{exploratory-data-analysis}{%
+\subsection{Exploratory Data Analysis}\label{exploratory-data-analysis}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                 ID       overall       score\_1       score\_2       score\_3  \textbackslash{}
+count  30363.000000  30363.000000  27173.000000  24310.000000  27198.000000
+mean   33779.227382      3.824754      3.372263      3.776800      3.631609
+std    19491.487518      1.155155      1.301732      1.296621      1.228599
+min        1.000000      1.000000      1.000000      1.000000      1.000000
+25\%    16889.500000      3.000000      2.000000      3.000000      3.000000
+50\%    33889.000000      4.000000      3.500000      4.000000      4.000000
+75\%    50628.000000      5.000000      4.000000      5.000000      5.000000
+max    67529.000000      5.000000      5.000000      5.000000      5.000000
+
+            score\_4       score\_5       score\_6
+count  27164.000000  26903.000000  30363.000000
+mean       3.936994      3.322269      1.087607
+std        1.047924      1.312911      4.920717
+min        1.000000      1.000000      0.000000
+25\%        3.000000      2.000000      0.000000
+50\%        4.000000      3.000000      0.000000
+75\%        5.000000      4.000000      1.000000
+max        5.000000      5.000000    449.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+               ID   overall   score\_1   score\_2   score\_3   score\_4   score\_5  \textbackslash{}
+ID       1.000000 -0.018519  0.045673 -0.013874 -0.054481 -0.006726 -0.076067
+overall -0.018519  1.000000  0.613176  0.760170  0.692272  0.542776  0.728527
+score\_1  0.045673  0.613176  1.000000  0.575368  0.466423  0.418864  0.572163
+score\_2 -0.013874  0.760170  0.575368  1.000000  0.583594  0.466312  0.714954
+score\_3 -0.054481  0.692272  0.466423  0.583594  1.000000  0.510693  0.629550
+score\_4 -0.006726  0.542776  0.418864  0.466312  0.510693  1.000000  0.476415
+score\_5 -0.076067  0.728527  0.572163  0.714954  0.629550  0.476415  1.000000
+score\_6 -0.037986 -0.171227 -0.129666 -0.130033 -0.128261 -0.078422 -0.113733
+
+          score\_6
+ID      -0.037986
+overall -0.171227
+score\_1 -0.129666
+score\_2 -0.130033
+score\_3 -0.128261
+score\_4 -0.078422
+score\_5 -0.113733
+score\_6  1.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+ID                    0
+Place                 0
+location          11231
+date                  0
+status                0
+job\_title             0
+summary              63
+positives             0
+negatives             1
+advice\_to\_mgmt    13209
+overall               0
+score\_1            3190
+score\_2            6053
+score\_3            3165
+score\_4            3199
+score\_5            3460
+score\_6               0
+dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23bb8f76d8>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23ba802400>],
+       [<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23ba77f8d0>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23ba6f7240>],
+       [<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23baaf0668>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23baaaef60>]],
+      dtype=object)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_7_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{replacing-the-intermediate-value}{%
+\subsubsection{Replacing the intermediate
+value}\label{replacing-the-intermediate-value}}
+
+    \hypertarget{correlation-without-replacing-the-intermediate-value}{%
+\paragraph{Correlation without replacing the intermediate
+value}\label{correlation-without-replacing-the-intermediate-value}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+overall    1.000000
+score\_1    0.613176
+score\_2    0.760170
+score\_3    0.692272
+score\_4    0.542776
+score\_5    0.728527
+Name: overall, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{correlation-when-replaced-with-ceil-values}{%
+\paragraph{Correlation when replaced with ceil
+values}\label{correlation-when-replaced-with-ceil-values}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.5}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{3.5}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mf}{4.5}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+overall    1.000000
+score\_1    0.606945
+score\_2    0.760170
+score\_3    0.690072
+score\_4    0.537082
+score\_5    0.725851
+Name: overall, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{correlation-when-replaced-with-floor-values}{%
+\paragraph{Correlation when replaced with floor
+values}\label{correlation-when-replaced-with-floor-values}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.5}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{3.5}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{4.5}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{40}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+overall    1.000000
+score\_1    0.581908
+score\_2    0.681382
+score\_3    0.660230
+score\_4    0.519466
+score\_5    0.686935
+Name: overall, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{using-graphical-methods}{%
+\paragraph{using graphical methods}\label{using-graphical-methods}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{original}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ceil}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.5}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{3.5}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mf}{4.5}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{floor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.5}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{3.5}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{4.5}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x7f23ba9a9b70>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{conclusion-by-preserving-the-original-correlation}{%
+\paragraph{Conclusion by preserving the original
+correlation}\label{conclusion-by-preserving-the-original-correlation}}
+
+    \textbf{Conclusion}: using the floor value may give the best results
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df} \PY{o}{=} \PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.5}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{3.5}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{4.5}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{filling-null-values}{%
+\subsubsection{Filling null values}\label{filling-null-values}}
+
+    \hypertarget{correlation-without-filling-nulls}{%
+\paragraph{correlation without filling
+nulls}\label{correlation-without-filling-nulls}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+overall    1.000000
+score\_1    0.616380
+score\_2    0.760170
+score\_3    0.691627
+score\_4    0.543621
+score\_5    0.729112
+Name: overall, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{corrleation-when-filled-with-median}{%
+\paragraph{corrleation when filled with
+median}\label{corrleation-when-filled-with-median}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+overall    4.0
+score\_1    3.0
+score\_2    4.0
+score\_3    4.0
+score\_4    4.0
+score\_5    3.0
+dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+overall    1.000000
+score\_1    0.581908
+score\_2    0.681382
+score\_3    0.660230
+score\_4    0.519466
+score\_5    0.686935
+Name: overall, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{correlation-when-filled-with-mode}{%
+\paragraph{Correlation when filled with
+mode}\label{correlation-when-filled-with-mode}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{mode}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+   overall  score\_1  score\_2  score\_3  score\_4  score\_5
+0      5.0      4.0      5.0      5.0      5.0      4.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{mode}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+overall    1.000000
+score\_1    0.585995
+score\_2    0.623318
+score\_3    0.633365
+score\_4    0.505072
+score\_5    0.688675
+Name: overall, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{using-graphical-methods}{%
+\paragraph{using graphical methods}\label{using-graphical-methods}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{original}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mode}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{mode}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{43}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x7f23b7e3fe10>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{conclusion-by-preserving-original-correlation}{%
+\paragraph{Conclusion by preserving original
+correlation}\label{conclusion-by-preserving-original-correlation}}
+
+    \textbf{Conclusion}: Filling nulls with median may give the best results
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df} \PY{o}{=} \PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{conclusion-of-eda}{%
+\subsubsection{Conclusion of EDA}\label{conclusion-of-eda}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{44}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b7d3aef0>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b74d2e80>],
+       [<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b79d12b0>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b798e9e8>],
+       [<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b795be10>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b791e748>]],
+      dtype=object)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_35_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{feature-selection}{%
+\subsection{Feature Selection}\label{feature-selection}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{46}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+   ID      Place         location           date             status  \textbackslash{}
+0   1  startup\_1              NaN   Dec 11, 2018  Current Employee
+1   5  startup\_1  Los Angeles, CA   Jul 19, 2018   Former Employee
+2   9  startup\_1     New York, NY   Dec 10, 2018  Current Employee
+3  16  startup\_1              NaN    Dec 6, 2018  Current Employee
+4  17  startup\_1              NaN   Nov 29, 2018  Current Employee
+
+             job\_title                                  summary  \textbackslash{}
+0   Anonymous Employee                 Best Company to work for
+1    Software Engineer          Unique, one of a kind dream job
+2   Anonymous Employee  Google Surpasses Realistic Expectations
+3   Anonymous Employee                                   Review
+4   Anonymous Employee                         Review of Google
+
+                                           positives  \textbackslash{}
+0                      People are smart and friendly
+1  Google is a world of its own. At every other c{\ldots}
+2  Great products. Vision you can feel good about{\ldots}
+3                  The people are great to work with
+4     The people are great to work with, good perks.
+
+                                           negatives  \textbackslash{}
+0                 Bureaucracy is slowing things down
+1  If you don't work in MTV (HQ), you will be giv{\ldots}
+2  Younger employees complaining about the compan{\ldots}
+3          There is lower compensation than expected
+4          Wide variety in experience based on team.
+
+                                      advice\_to\_mgmt  overall  score\_1  \textbackslash{}
+0                                                NaN      5.0      4.0
+1  Promote managers into management for their man{\ldots}      5.0      5.0
+2                                                NaN      5.0      5.0
+3                                                NaN      5.0      NaN
+4                                                NaN      5.0      4.0
+
+   score\_2  score\_3  score\_4  score\_5  score\_6
+0      5.0      5.0      4.0      5.0        0
+1      5.0      5.0      5.0      5.0       49
+2      5.0      5.0      5.0      5.0        0
+3      NaN      NaN      NaN      NaN        0
+4      5.0      5.0      5.0      4.0        2
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{grouping-by-status}{%
+\paragraph{Grouping by `status'}\label{grouping-by-status}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{47}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                             ID   overall   score\_1   score\_2   score\_3  \textbackslash{}
+status
+Current Employee   33564.524828  3.968078  3.480678  3.925766  3.764298
+Former Employee    34147.047717  3.579215  3.134824  3.522494  3.364179
+
+                    score\_4   score\_5   score\_6
+status
+Current Employee   3.957699  3.467854  0.995566
+Former Employee    3.844379  3.039476  1.245286
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{49}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                     count      mean       std  min  25\%  50\%  75\%  max
+status
+Current Employee   19172.0  3.968078  1.082109  1.0  3.0  4.0  5.0  5.0
+Former Employee    11191.0  3.579215  1.232474  1.0  3.0  4.0  5.0  5.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{grouping-by-place}{%
+\paragraph{Grouping by `place'}\label{grouping-by-place}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Place}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{50}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                     ID   overall   score\_1   score\_2   score\_3   score\_4  \textbackslash{}
+Place
+startup\_1   3839.463099  4.341690  4.000000  4.362108  3.957775  4.353495
+startup\_2  43129.691486  3.967096  3.340641  4.108682  3.399439  3.998687
+startup\_3  36239.342939  3.429395  3.204334  3.661972  2.993769  4.062112
+startup\_4  21065.374248  3.581504  3.001137  3.510074  3.593679  3.680030
+startup\_5  35027.605674  4.489362  3.852555  4.442368  4.350954  4.585652
+startup\_6  58495.065940  3.807883  3.573366  3.641639  3.636688  3.950959
+
+            score\_5   score\_6
+Place
+startup\_1  3.858163  1.151268
+startup\_2  3.460608  1.044946
+startup\_3  3.183230  5.659942
+startup\_4  3.157657  1.202848
+startup\_5  4.234949  3.478014
+startup\_6  3.123414  0.516733
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Place}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{51}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+             count      mean       std  min  25\%  50\%  75\%  max
+Place
+startup\_1   3550.0  4.341690  0.911176  1.0  4.0  5.0  5.0  5.0
+startup\_2   5896.0  3.967096  1.052773  1.0  3.0  4.0  5.0  5.0
+startup\_3    347.0  3.429395  1.423401  1.0  2.0  4.0  5.0  5.0
+startup\_4  11797.0  3.581504  1.260859  1.0  3.0  4.0  5.0  5.0
+startup\_5    705.0  4.489362  0.994424  1.0  4.0  5.0  5.0  5.0
+startup\_6   8068.0  3.807883  1.041486  1.0  3.0  4.0  5.0  5.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{conclusion}{%
+\subsubsection{Conclusion}\label{conclusion}}
+
+\textbf{Selected} + ID + summary + positives + negatives + overall +
+score\_\{1-5\}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{temp\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{summary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{summary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{temp\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positives}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positives}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{temp\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negatives}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negatives}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{56}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+       overall  score\_1  score\_2  score\_3  score\_4  score\_5     ID  \textbackslash{}
+0          5.0      4.0      5.0      5.0      4.0      5.0      1
+1          5.0      5.0      5.0      5.0      5.0      5.0      5
+2          5.0      5.0      5.0      5.0      5.0      5.0      9
+3          5.0      3.0      4.0      4.0      4.0      3.0     16
+4          5.0      4.0      5.0      5.0      5.0      4.0     17
+5          5.0      3.0      4.0      2.0      4.0      3.0     18
+6          5.0      5.0      5.0      5.0      5.0      5.0     19
+7          5.0      3.0      4.0      3.0      4.0      5.0     21
+8          5.0      5.0      5.0      5.0      5.0      5.0     22
+9          5.0      3.0      4.0      5.0      4.0      3.0     23
+10         5.0      3.0      4.0      4.0      4.0      3.0     24
+11         5.0      5.0      5.0      5.0      5.0      5.0     25
+12         5.0      4.0      5.0      4.0      5.0      5.0     26
+13         5.0      4.0      5.0      5.0      5.0      5.0     29
+14         5.0      3.0      4.0      4.0      4.0      3.0     30
+15         5.0      5.0      5.0      5.0      5.0      5.0     33
+16         4.0      5.0      5.0      4.0      4.0      4.0     34
+17         5.0      3.0      4.0      4.0      5.0      4.0     35
+18         5.0      5.0      5.0      5.0      5.0      5.0     36
+19         4.0      4.0      3.0      3.0      4.0      3.0     38
+20         3.0      2.0      3.0      5.0      5.0      3.0     39
+21         5.0      3.0      5.0      5.0      5.0      4.0     40
+22         5.0      4.0      4.0      5.0      5.0      3.0     42
+23         3.0      3.0      2.0      3.0      4.0      1.0     43
+24         5.0      5.0      5.0      4.0      4.0      4.0     45
+25         4.0      4.0      4.0      4.0      4.0      3.0     48
+26         4.0      2.0      4.0      4.0      5.0      4.0     49
+27         5.0      3.0      4.0      5.0      4.0      3.0     51
+28         4.0      3.0      4.0      4.0      4.0      3.0     52
+29         5.0      3.0      4.0      4.0      4.0      3.0     54
+{\ldots}        {\ldots}      {\ldots}      {\ldots}      {\ldots}      {\ldots}      {\ldots}    {\ldots}
+30333      4.0      4.0      4.0      3.0      4.0      3.0  67450
+30334      4.0      4.0      4.0      4.0      4.0      4.0  67451
+30335      4.0      5.0      4.0      4.0      4.0      3.0  67455
+30336      4.0      4.0      4.0      4.0      4.0      3.0  67458
+30337      5.0      4.0      4.0      5.0      4.0      4.0  67461
+30338      4.0      3.0      4.0      3.0      4.0      4.0  67469
+30339      4.0      5.0      4.0      3.0      5.0      5.0  67470
+30340      3.0      5.0      4.0      3.0      4.0      5.0  67481
+30341      3.0      3.0      4.0      4.0      4.0      2.0  67482
+30342      4.0      4.0      4.0      4.0      4.0      3.0  67487
+30343      3.0      5.0      4.0      4.0      1.0      3.0  67490
+30344      4.0      5.0      4.0      4.0      4.0      3.0  67495
+30345      4.0      4.0      4.0      4.0      2.0      3.0  67496
+30346      4.0      2.0      4.0      4.0      3.0      2.0  67498
+30347      4.0      4.0      4.0      4.0      4.0      4.0  67500
+30348      3.0      4.0      4.0      3.0      4.0      2.0  67501
+30349      4.0      4.0      4.0      3.0      3.0      3.0  67503
+30350      2.0      2.0      4.0      1.0      4.0      2.0  67504
+30351      4.0      2.0      4.0      3.0      4.0      4.0  67506
+30352      3.0      4.0      4.0      2.0      1.0      4.0  67511
+30353      4.0      3.0      4.0      3.0      4.0      3.0  67513
+30354      3.0      4.0      4.0      4.0      5.0      4.0  67514
+30355      4.0      4.0      4.0      4.0      3.0      4.0  67515
+30356      3.0      2.0      4.0      3.0      4.0      2.0  67519
+30357      5.0      5.0      4.0      4.0      4.0      4.0  67520
+30358      3.0      3.0      4.0      4.0      2.0      3.0  67523
+30359      4.0      3.0      4.0      3.0      4.0      4.0  67524
+30360      3.0      3.0      4.0      4.0      4.0      2.0  67525
+30361      4.0      3.0      4.0      4.0      4.0      3.0  67527
+30362      2.0      2.0      4.0      2.0      4.0      2.0  67529
+
+                                                 summary  \textbackslash{}
+0                               Best Company to work for
+1                        Unique, one of a kind dream job
+2                Google Surpasses Realistic Expectations
+3                                                 Review
+4                                       Review of Google
+5                                               Analysts
+6                       Great Company With No Down Sides
+7                  Great, but great can always be better
+8                              Great company to work for
+9                                                    NaN
+10                                     Software Engineer
+11                                            Accountant
+12                              Good Company to Work for
+13                                   Great place to work
+14                                                 Great
+15                                          Is very good
+16                  Google is still the best place to be
+17                                                Google
+18                                    Good place to work
+19                                     Good compensation
+20                    Great perks, bad work-life balance
+21                                      Best of the best
+22                                          Hard to beat
+23                                              Big Tech
+24                                  Positive Experiences
+25                                            Its Google
+26                                                     g
+27                                            Good place
+28                                            cs analyst
+29                                               Amazing
+{\ldots}                                                  {\ldots}
+30333                                 An okay experience
+30334                                        Challenging
+30335  Fun, but definitely depends on what group you'{\ldots}
+30336     Dynamic and challenging fast paced environment
+30337                          Great learning experience
+30338  Good place to work, although can be stifled by{\ldots}
+30339  Great place to work but focused a little too m{\ldots}
+30340                                              great
+30341  Once was a great place to work. No longer an i{\ldots}
+30342                                               Good
+30343                Bad Experience as a Contract worker
+30344                        Awesome company to work for
+30345                              Great place obviously
+30346                                I've learned a lot.
+30347                                    Good experience
+30348  Started kind of shaky, but things are getting {\ldots}
+30349                              Good software company
+30350                     was once a great place to work
+30351               Great experience - but much pressure
+30352  Work life balance is great, Compensation is no{\ldots}
+30353         Overall good, however, it depends on group
+30354                                   Good career path
+30355  A stable company but still is not for lazy people
+30356    Not the cult it used to be - far more a job now
+30357                            Having fun at Microsoft
+30358  I started off great some years ago but lately {\ldots}
+30359                                      Good company.
+30360  Enriching experience for a beginner but bad fo{\ldots}
+30361                                 Good Place to Work
+30362                                   Used to be great
+
+                                               positives  \textbackslash{}
+0                          People are smart and friendly
+1      Google is a world of its own. At every other c{\ldots}
+2      Great products. Vision you can feel good about{\ldots}
+3                      The people are great to work with
+4         The people are great to work with, good perks.
+5      Good managers, benefits , some support, nice a{\ldots}
+6               Really fun work environment with startup
+7                 Great team and support for individuals
+8                                    I love Google a lot
+9                            it's a great place to work!
+10                    Awesome job environment to work in
+11      I like and learned from the beginning accounting
+12          - perks are phenomenal, food, health, office
+13     The people are awesome. Lots of perks. Reduce {\ldots}
+14     Great place to work, free food, and great cult{\ldots}
+15                       is very good. is very very good
+16     Great place to work, learn new things, grow an{\ldots}
+17       Google is one of the beast Company in the world
+18                    Nice perks. Good work life balance
+19     Better than average engineers. Competitive com{\ldots}
+20     Google’s perks are great: free food, shuttle t{\ldots}
+21     The best company I've worked for. Culture, per{\ldots}
+22     Amazing compensation + benefits (hard to beat {\ldots}
+23                        Never have to skip a paycheck.
+24     Good opportunities for different technical exp{\ldots}
+25     food, shuttle, technology, perks, health, 401K{\ldots}
+26                  perks are pretty good, as is culture
+27                        Pretty good benifits and bank.
+28                great work culture , good for starters
+29                       People and culture are terrific
+{\ldots}                                                  {\ldots}
+30333  Good healthcare Smart people Free soda and coffee
+30334  We work with some of the smartest engineers an{\ldots}
+30335  There's lots of flexibility allowed in job fun{\ldots}
+30336  Being a part of one of the most successful bus{\ldots}
+30337  Lots of benefits that were offered to entice m{\ldots}
+30338  Big money available to drive your ideas in mar{\ldots}
+30339  - Great perks and salary - A lot of trainings {\ldots}
+30340  -Collaborative atmosphere -Upwards mobility -R{\ldots}
+30341  Super Intelligent employees and peers. Awesome{\ldots}
+30342                    Opportunities to learn and grow
+30343  - good environment, talented people, cool tech{\ldots}
+30344  Microsoft is a very nice company to work for. {\ldots}
+30345  people are hard workers. lots to learn from th{\ldots}
+30346  I work with a lot of intelligent and knowledge{\ldots}
+30347                       Passion for work and company
+30348  Great benefits. no other place can compare. As{\ldots}
+30349  Challenge, professional career growth, high st{\ldots}
+30350                    still some pockets of good ppl.
+30351  One of the best places to work - profesionally{\ldots}
+30352  Best company for entry level Engineer. Good Wo{\ldots}
+30353  Has great benefit package. Most of the time yo{\ldots}
+30354  You can learn and experience lots of things at{\ldots}
+30355     - Good benefit so far - Large, lots of variety
+30356                     lots of new stuff almost daily
+30357  Unlimited opportunities, fun, great networking{\ldots}
+30358  Employee empowerment Ability to take your init{\ldots}
+30359         Good benefits package, huge customer base.
+30360  -Access to a wide range of technologies, compl{\ldots}
+30361  Nice place to work. Good atmosphere with advan{\ldots}
+30362  Compensation, Health benefits and brand name r{\ldots}
+
+                                               negatives
+0                     Bureaucracy is slowing things down
+1      If you don't work in MTV (HQ), you will be giv{\ldots}
+2      Younger employees complaining about the compan{\ldots}
+3              There is lower compensation than expected
+4              Wide variety in experience based on team.
+5               Long hours, far locations, a lot of work
+6                       Really no down sides that I saw.
+7                 Lots of bureaucracy, not super diverse
+8                           Some things are not to great
+9      too much red tape on doing even the smallest p{\ldots}
+10                      Pressure is there for some parts
+11                 High clerical work in the Sane record
+12                 - work life balance is hard to manage
+13     There's sometimes too wide a variety of things{\ldots}
+14     Big company, prepare to move much slower than {\ldots}
+15                            You work a lot. Like a lot
+16     Large company issues have crept up but nothing{\ldots}
+17                                 You have to work hard
+18     too slow and too much consensus culture someti{\ldots}
+19     Big and beurocratic. Lots of legacy systems. M{\ldots}
+20     I have zero work-life balance. I work minimum {\ldots}
+21               Set hours for breakfast, lunch, dinner.
+22     Growing pains as Google has gone from \textasciitilde{}10k to {\ldots}
+23     Google has an over abundance of technicians an{\ldots}
+24     Difficult to advance depending on which projec{\ldots}
+25     Great place to work finace is backend though. {\ldots}
+26       work/life balance is generally moderate to poor
+27            Being challanged everyday. Having no life.
+28                        long hours can be unreasonable
+29                              None that I can think of
+{\ldots}                                                  {\ldots}
+30333       Hard to progress To much emphasis on reviews
+30334  Long work hours. Especially at the time of sof{\ldots}
+30335  Huge company, division structures constantly r{\ldots}
+30336  Like any other big company its internal proces{\ldots}
+30337  Not much room for growth if you are looking to{\ldots}
+30338  Too many layers, becoming more political drive{\ldots}
+30339  - not a fast ship but a huge tanker - very per{\ldots}
+30340  -really bureaucratic organization -feel like a{\ldots}
+30341  No longer seen as an industry leader. Use to l{\ldots}
+30342  Institution and connecting with outside Microsoft
+30343          - no full time opportunity at entry level
+30344  In some groups there is lot of internal politi{\ldots}
+30345  some people are extremely geekish senior manag{\ldots}
+30346  The org has a deep hierarchic structure. When {\ldots}
+30347  Lot of opportunities. Unable to juggle for per{\ldots}
+30348  Sometimes it feels too big! too many organizat{\ldots}
+30349         Keen competition. Hard working, stressful.
+30350  was great now filled w/ lots of ppl who outsou{\ldots}
+30351  very pressing and therefore not enough time fo{\ldots}
+30352  If you joined on a wrong level, No matter how {\ldots}
+30353  Takes long time to make a decision. Difficult {\ldots}
+30354  Difficult to work with some senior management {\ldots}
+30355              - Need to follow many rules/processes
+30356       processes are killing it and losing momentum
+30357  Long hours (but then most companies today requ{\ldots}
+30358  Company too slow Bureaucratic Lacking consumer{\ldots}
+30359            Politics, very slow, lots of dead wood.
+30360  -Testers(SDET's ) do not get as many opportuni{\ldots}
+30361  Management confusion at times with vision for {\ldots}
+30362  Leadership was better in the late 90's{\ldots}its {\ldots}
+
+[30363 rows x 10 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{58}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+            overall       score\_1       score\_2       score\_3       score\_4  \textbackslash{}
+count  30363.000000  30363.000000  30363.000000  30363.000000  30363.000000
+mean       3.824754      3.317558      3.821296      3.658565      3.925271
+std        1.155155      1.238744      1.163618      1.173609      0.999628
+min        1.000000      1.000000      1.000000      1.000000      1.000000
+25\%        3.000000      3.000000      3.000000      3.000000      3.000000
+50\%        4.000000      3.000000      4.000000      4.000000      4.000000
+75\%        5.000000      4.000000      5.000000      5.000000      5.000000
+max        5.000000      5.000000      5.000000      5.000000      5.000000
+
+            score\_5            ID
+count  30363.000000  30363.000000
+mean       3.276587  33779.227382
+std        1.242105  19491.487518
+min        1.000000      1.000000
+25\%        3.000000  16889.500000
+50\%        3.000000  33889.000000
+75\%        4.000000  50628.000000
+max        5.000000  67529.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{59}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+          overall   score\_1   score\_2   score\_3   score\_4   score\_5        ID
+overall  1.000000  0.581908  0.681382  0.660230  0.519466  0.686935 -0.018519
+score\_1  0.581908  1.000000  0.540942  0.451631  0.411034  0.571514  0.041219
+score\_2  0.681382  0.540942  1.000000  0.544225  0.434767  0.666376 -0.006667
+score\_3  0.660230  0.451631  0.544225  1.000000  0.509976  0.609859 -0.062340
+score\_4  0.519466  0.411034  0.434767  0.509976  1.000000  0.469606 -0.018743
+score\_5  0.686935  0.571514  0.666376  0.609859  0.469606  1.000000 -0.068154
+ID      -0.018519  0.041219 -0.006667 -0.062340 -0.018743 -0.068154  1.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{60}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b763ec50>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b72d8cc0>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b7302630>],
+       [<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b72c3be0>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b7283438>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b71cda20>],
+       [<matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b71e2b00>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b715f860>,
+        <matplotlib.axes.\_subplots.AxesSubplot object at 0x7f23b712ad68>]],
+      dtype=object)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_49_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{feature-extraction-and-sentiment-analysis}{%
+\subsection{Feature Extraction and Sentiment
+Analysis}\label{feature-extraction-and-sentiment-analysis}}
+
+    \hypertarget{filling-null-texts-fields-with-review-string}{%
+\paragraph{Filling null texts fields with `review'
+string}\label{filling-null-texts-fields-with-review-string}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{temp\PYZus{}df} \PY{o}{=} \PY{n}{temp\PYZus{}df}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{review}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{importing-punctuations-stop-words-and-parser}{%
+\paragraph{Importing Punctuations, stop words and
+parser}\label{importing-punctuations-stop-words-and-parser}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{string}
+\PY{n}{punctuations} \PY{o}{=} \PY{n}{string}\PY{o}{.}\PY{n}{punctuation}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{nltk}\PY{n+nn}{.}\PY{n+nn}{corpus} \PY{k}{import} \PY{n}{stopwords}
+\PY{n}{english\PYZus{}stop\PYZus{}words} \PY{o}{=} \PY{n}{stopwords}\PY{o}{.}\PY{n}{words}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{english}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{english\PYZus{}stop\PYZus{}words}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{no}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{english\PYZus{}stop\PYZus{}words}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{not}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{english\PYZus{}stop\PYZus{}words}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{review}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{english\PYZus{}stop\PYZus{}words}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{down}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{spacy}
+\PY{n}{parser} \PY{o}{=} \PY{n}{spacy}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{en\PYZus{}core\PYZus{}web\PYZus{}md}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{parser}\PY{o}{.}\PY{n}{Defaults}\PY{o}{.}\PY{n}{stop\PYZus{}words} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{no}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{not}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{down}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+\PY{n}{parser}\PY{o}{.}\PY{n}{Defaults}\PY{o}{.}\PY{n}{stop\PYZus{}words} \PY{o}{|}\PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{n}{english\PYZus{}stop\PYZus{}words}\PY{p}{)}
+\PY{n}{parser}\PY{o}{.}\PY{n}{Defaults}\PY{o}{.}\PY{n}{stop\PYZus{}words} \PY{o}{|}\PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{n}{punctuations}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{parser}\PY{o}{.}\PY{n}{Defaults}\PY{o}{.}\PY{n}{stop\PYZus{}words}\PY{p}{:}
+    \PY{n}{lex} \PY{o}{=} \PY{n}{parser}\PY{o}{.}\PY{n}{vocab}\PY{p}{[}\PY{n}{word}\PY{p}{]}
+    \PY{n}{lex}\PY{o}{.}\PY{n}{is\PYZus{}stop} \PY{o}{=} \PY{k+kc}{True}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{feature-transformation}{%
+\subsubsection{Feature Transformation}\label{feature-transformation}}
+
+    \hypertarget{summary-column}{%
+\paragraph{`Summary' Column}\label{summary-column}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{clean\PYZus{}summary}\PY{p}{(}\PY{n}{raw\PYZus{}data}\PY{p}{)}\PY{p}{:}
+    \PY{n}{parsed\PYZus{}data} \PY{o}{=} \PY{n}{parser}\PY{p}{(}\PY{n}{raw\PYZus{}data}\PY{p}{)}
+    \PY{n}{df1} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{t}\PY{o}{.}\PY{n}{text}\PY{p}{,} \PY{n}{t}\PY{o}{.}\PY{n}{pos\PYZus{}}\PY{p}{,} \PY{n}{t}\PY{o}{.}\PY{n}{dep\PYZus{}}\PY{p}{,} \PY{n}{t}\PY{o}{.}\PY{n}{is\PYZus{}stop}\PY{p}{)} \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n}{parsed\PYZus{}data}\PY{p}{]}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{parsed\PYZus{}data}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{POS}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DEP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{IS\PYZus{}STOP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    
+    \PY{n}{df1} \PY{o}{=} \PY{n}{df1}\PY{p}{[}\PY{n}{df1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{IS\PYZus{}STOP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{k+kc}{False}\PY{p}{]}
+    \PY{n}{df1} \PY{o}{=} \PY{n}{df1}\PY{p}{[}\PY{n}{df1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{POS}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{VERB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{==} \PY{k+kc}{False}\PY{p}{]}
+    \PY{n}{df1} \PY{o}{=} \PY{n}{df1}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{df1}\PY{p}{[}\PY{n}{df1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{POS}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PROPN}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{df1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DEP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{compound}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{==}\PY{k+kc}{False}\PY{p}{]}\PY{o}{.}\PY{n}{index}\PY{p}{)}
+    
+    \PY{n}{ngram} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{bag\PYZus{}of\PYZus{}words} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{last\PYZus{}index} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+    \PY{k}{for} \PY{n}{idx}\PY{p}{,} \PY{n}{item} \PY{o+ow}{in} \PY{n}{df1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{idx}\PY{o}{\PYZhy{}}\PY{n}{last\PYZus{}index} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{ngram}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{item}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{ngram}\PY{p}{)}\PY{p}{:}
+                \PY{n}{bag\PYZus{}of\PYZus{}words}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{ngram}\PY{p}{)}\PY{p}{)}
+                \PY{n}{ngram}\PY{o}{.}\PY{n}{clear}\PY{p}{(}\PY{p}{)}
+            \PY{n}{ngram}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{item}\PY{p}{)}
+        \PY{n}{last\PYZus{}index} \PY{o}{=} \PY{n}{idx}
+    \PY{n}{bag\PYZus{}of\PYZus{}words}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{ngram}\PY{p}{)}\PY{p}{)}
+        
+    \PY{k}{return} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{bag\PYZus{}of\PYZus{}words}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{positives-column}{%
+\paragraph{`Positives' column}\label{positives-column}}
+
+    \hypertarget{negatives-column}{%
+\paragraph{`Negatives' column}\label{negatives-column}}
+
+    \hypertarget{modelling-testing}{%
+\subsection{Modelling \& Testing}\label{modelling-testing}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{172}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{,} \PY{n}{cross\PYZus{}val\PYZus{}predict}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{confusion\PYZus{}matrix}\PY{p}{,} \PY{n}{precision\PYZus{}score}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{naive-bayes-model}{%
+\subsubsection{Naive-Bayes Model}\label{naive-bayes-model}}
+
+    \hypertarget{gaussian-naive-bayes}{%
+\paragraph{Gaussian Naive Bayes}\label{gaussian-naive-bayes}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{173}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{naive\PYZus{}bayes} \PY{k}{import} \PY{n}{GaussianNB}
+\PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{GaussianNB}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f1\PYZus{}micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{173}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.596218181167675
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{multinomial-naive-bayes}{%
+\paragraph{Multinomial Naive Bayes}\label{multinomial-naive-bayes}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{174}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{naive\PYZus{}bayes} \PY{k}{import} \PY{n}{MultinomialNB}
+\PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{MultinomialNB}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{174}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.38234143633255374
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{175}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{p}{,}\PY{n}{cross\PYZus{}val\PYZus{}predict}\PY{p}{(}\PY{n}{MultinomialNB}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{175}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[   0,    0,    0,  959,  810],
+       [   0,    0,    0, 1467,  890],
+       [   0,    0,    0, 2932, 2767],
+       [   0,    0,    0, 3712, 6427],
+       [   0,    0,    0, 2502, 7897]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{linear-models}{%
+\subsubsection{Linear Models}\label{linear-models}}
+
+    \hypertarget{logistic-model}{%
+\paragraph{Logistic Model}\label{logistic-model}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{176}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LogisticRegression}
+\PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{LogisticRegression}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f1\PYZus{}micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:432: FutureWarning: Default solver
+will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/logistic.py:459: FutureWarning: Default
+multi\_class will be changed to 'auto' in 0.22. Specify the multi\_class option to
+silence this warning.
+  "this warning.", FutureWarning)
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{176}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.5529723069330077
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{sgd-model}{%
+\paragraph{SGD Model}\label{sgd-model}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{177}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{SGDClassifier}
+\PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{SGDClassifier}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f1\PYZus{}micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/linear\_model/stochastic\_gradient.py:144: FutureWarning:
+max\_iter and tol parameters have been added in SGDClassifier in 0.19. If both
+are left unset, they default to max\_iter=5 and tol=None. If tol is not None,
+max\_iter defaults to max\_iter=1000. From 0.21, default max\_iter will be 1000,
+and default tol will be 1e-3.
+  FutureWarning)
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{177}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.5092731843342057
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{random-forest}{%
+\subsubsection{Random Forest}\label{random-forest}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{178}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{ensemble} \PY{k}{import} \PY{n}{RandomForestClassifier}
+\PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{RandomForestClassifier}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f1\PYZus{}micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/ensemble/forest.py:248: FutureWarning: The default value of
+n\_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{178}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.5936185153215889
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{decision-tree}{%
+\subsubsection{Decision Tree}\label{decision-tree}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{179}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{tree} \PY{k}{import} \PY{n}{DecisionTreeClassifier}
+\PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{DecisionTreeClassifier}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f1\PYZus{}micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{179}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.5922686509109465
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{svm}{%
+\subsubsection{SVM}\label{svm}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{180}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{svm} \PY{k}{import} \PY{n}{LinearSVC}
+\PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{LinearSVC}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{final\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{overall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f1\PYZus{}micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+/home/info/anaconda3/envs/hackathon/lib/python3.5/site-
+packages/sklearn/svm/base.py:922: ConvergenceWarning: Liblinear failed to
+converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{180}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.5462543811645347
+\end{Verbatim}
+\end{tcolorbox}
+        
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
